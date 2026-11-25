@@ -1,0 +1,277 @@
+{
+  "schema_hash": "a387a5b162f89f12280612a6ba0ad91a69cd95dd4e6dce607344e401c799c7e4",
+  "General": {
+    "TracerPrefix": "TRC",
+    "TracerEnabled": true,
+    "TracerBufferSize": 1000,
+    "TracerBufferType": "linear",
+    "TracePointIDSize": "2B",
+    "TracePointNameUnique": true,
+    "TracePointNameUnderscored": true,
+    "TimestampResolutionValue": 1,
+    "TimestampResolutionUnit": "us",
+    "TimestampCntSize": "4B",
+    "TimestampStorage": "fixed",
+    "TimestampAPI": "GetTimestamp(&timestamp);",
+    "TimestampOverflowAPI": "TimerOverflow();",
+    "TimestampHeader": "timestamp.h",
+    "AtomicSectionStartAPI": "SuspendAllInterrupts();",
+    "AtomicSectionStopAPI": "ResumeAllInterrupts();",
+    "AtomicSectionHeader": "critical_sections.h"
+  },
+  "TracePoints": [
+    {
+      "TracePointGroup": "EV",
+      "TracePointName": "Tracepoint0",
+      "TracePointEnabled": false,
+      "TracePointData": [
+        "u8a5"
+      ],
+      "AtomicSectionRequired": true,
+      "TracePointIDs": {
+        "": "0xCE8F"
+      }
+    },
+    {
+      "TracePointGroup": "SIG",
+      "TracePointName": "Tracepoint1",
+      "TracePointEnabled": false,
+      "TracePointType": "signal",
+      "TracePointData": [
+        "u8",
+        "u8a3"
+      ],
+      "AtomicSectionRequired": false,
+      "TracePointIDs": {
+        "Send": "0x7B4F",
+        "Receive": "0x455F"
+      }
+    },
+    {
+      "TracePointGroup": "TSK",
+      "TracePointName": "Tracepoint2",
+      "TracePointEnabled": false,
+      "TracePointType": "task",
+      "TracePointData": [],
+      "AtomicSectionRequired": false,
+      "TracePointIDs": {
+        "Start": "0xDAB0",
+        "Activate": "0xBB47",
+        "Preempt": "0x2A4A",
+        "Terminate": "0x88CD",
+        "Wait": "0x3689",
+        "Release": "0x0887"
+      }
+    },
+    {
+      "TracePointGroup": "ISR",
+      "TracePointName": "Tracepoint3",
+      "TracePointEnabled": false,
+      "TracePointType": "isr",
+      "TracePointData": [],
+      "AtomicSectionRequired": false,
+      "TracePointIDs": {
+        "Begin": "0x51E3",
+        "End": "0x65AF"
+      }
+    },
+    {
+      "TracePointGroup": "RT",
+      "TracePointName": "Tracepoint4",
+      "TracePointEnabled": false,
+      "TracePointType": "routine",
+      "TracePointData": [
+        "u32",
+        "f64"
+      ],
+      "AtomicSectionRequired": false,
+      "TracePointIDs": {
+        "Begin": "0xFADD",
+        "End": "0xFC86"
+      }
+    },
+    {
+      "TracePointGroup": "HSM",
+      "TracePointName": "Tracepoint5",
+      "TracePointEnabled": false,
+      "TracePointType": "hsm",
+      "TracePointData": [],
+      "AtomicSectionRequired": true,
+      "TracePointIDs": {
+        "Init": "0x3A0C",
+        "Entry": "0x77A7",
+        "Exit": "0x57F4",
+        "Event": "0xFB17",
+        "Timer": "0x7E4A",
+        "Transition": "0x63AC"
+      }
+    },
+    {
+      "TracePointGroup": "EV",
+      "TracePointName": "Tracepoint6",
+      "TracePointEnabled": false,
+      "TracePointData": [
+        "b5",
+        "b12",
+        "b3"
+      ],
+      "AtomicSectionRequired": true,
+      "TracePointIDs": {
+        "": "0xDDF1"
+      }
+    },
+    {
+      "TracePointGroup": "SIG",
+      "TracePointName": "Tracepoint7",
+      "TracePointEnabled": false,
+      "TracePointType": "signal",
+      "TracePointData": [],
+      "AtomicSectionRequired": false,
+      "TracePointIDs": {
+        "Send": "0x886B",
+        "Receive": "0xC429"
+      }
+    },
+    {
+      "TracePointGroup": "TSK",
+      "TracePointName": "Tracepoint8",
+      "TracePointEnabled": false,
+      "TracePointType": "task",
+      "TracePointData": [
+        "s16"
+      ],
+      "AtomicSectionRequired": false,
+      "TracePointIDs": {
+        "Start": "0xA35B",
+        "Activate": "0xDD44",
+        "Preempt": "0xAB9D",
+        "Terminate": "0xD8C1",
+        "Wait": "0xEF57",
+        "Release": "0xF9E8"
+      }
+    },
+    {
+      "TracePointGroup": "ISR",
+      "TracePointName": "Tracepoint9",
+      "TracePointEnabled": false,
+      "TracePointType": "isr",
+      "TracePointData": [],
+      "AtomicSectionRequired": false,
+      "TracePointIDs": {
+        "Begin": "0x106A",
+        "End": "0xB7D2"
+      }
+    },
+    {
+      "TracePointGroup": "RT",
+      "TracePointName": "Tracepoint10",
+      "TracePointEnabled": false,
+      "TracePointType": "routine",
+      "TracePointData": [],
+      "AtomicSectionRequired": false,
+      "TracePointIDs": {
+        "Begin": "0xFFDB",
+        "End": "0x12B4"
+      }
+    },
+    {
+      "TracePointGroup": "HSM",
+      "TracePointName": "Tracepoint11",
+      "TracePointEnabled": false,
+      "TracePointType": "hsm",
+      "TracePointInstanceSize": "1B",
+      "TracePointData": {
+        "Init": [],
+        "Entry": [
+          "u8(states)",
+          "u8(states)"
+        ],
+        "Exit": [
+          "u8(states)",
+          "u8(states)"
+        ],
+        "Event": [],
+        "Timer": [],
+        "Transition": [
+          "u8(states)",
+          "u8(states)"
+        ]
+      },
+      "AtomicSectionRequired": false,
+      "TracePointIDs": {
+        "Init": "0x6BC2",
+        "Entry": "0x33CE",
+        "Exit": "0x9312",
+        "Event": "0xEAFB",
+        "Timer": "0xAC7F",
+        "Transition": "0xB970"
+      }
+    },
+    {
+      "TracePointGroup": "FIFO",
+      "TracePointName": "Trc001",
+      "TracePointEnabled": true,
+      "TracePointType": "signal",
+      "TracePointCore": "0",
+      "TracePointData": [],
+      "AtomicSectionRequired": false,
+      "TracePointIDs": {
+        "Send": "0xB413",
+        "Receive": "0xB67A"
+      }
+    },
+    {
+      "TracePointGroup": "FILO",
+      "TracePointName": "Trc002",
+      "TracePointEnabled": true,
+      "TracePointType": "routine",
+      "TracePointCore": "1B",
+      "TracePointData": [],
+      "AtomicSectionRequired": false,
+      "TracePointIDs": {
+        "Begin": "0x71F6",
+        "End": "0xF457"
+      }
+    }
+  ],
+  "TracePointDataOverrides": [
+    {
+      "TracePointFilterKind": "wildcards",
+      "TracePointGroupFilter": "*",
+      "TracePointNameFilter": "*",
+      "TracePointTypeFilter": "*",
+      "TracePointSubtypeFilter": "Init",
+      "TracePointDataOverride": []
+    },
+    {
+      "TracePointFilterKind": "wildcards",
+      "TracePointGroupFilter": "*",
+      "TracePointNameFilter": "*",
+      "TracePointTypeFilter": "*",
+      "TracePointSubtypeFilter": "Event",
+      "TracePointDataOverride": []
+    },
+    {
+      "TracePointFilterKind": "wildcards",
+      "TracePointGroupFilter": "*",
+      "TracePointNameFilter": "*",
+      "TracePointTypeFilter": "*",
+      "TracePointSubtypeFilter": "Timer",
+      "TracePointDataOverride": []
+    }
+  ],
+  "TracePointDataStringify": [
+    {
+      "Name": "states",
+      "Values": "0..6",
+      "Stringify": "STATE_%d"
+    },
+    {
+      "Name": "states",
+      "Values": "7..",
+      "Stringify": "UNKNOWN_%d"
+    }
+  ],
+  "hash": "992a5ed7fc83a205f2bee2a2afc24a18b7298c02659324b638f3d4d88d13461e",
+  "short_hash": "0x5F8F6E1A"
+}

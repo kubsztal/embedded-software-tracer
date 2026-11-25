@@ -1,0 +1,105 @@
+# ==============================================================================
+# SCHEMA: IDENTIFIER-FIRST VCD SCHEMA WITH MULTI/SINGLE POLICIES & STRINGIFICATION
+# ==============================================================================
+
+tracepoints:
+  # ----------------------------------------------------------------------------
+  # LAYER 1: BASIC LAYER (Universal Event Traces & Arguments)
+  # ----------------------------------------------------------------------------
+  basic_layer:
+    primary:
+      identifier: "${full_name}"
+      var_type: event
+      on_init: null
+      on_occurrence: 1
+
+    arguments:
+      scalar:
+        raw:
+          identifier: "${full_name}_arg_${arg_idx}"
+          var_type: "real 32"
+          on_init: 0
+          on_occurrence: "${arg_val}"
+        stringified:
+          identifier: "${full_name}_arg_${arg_idx}_str"
+          var_type: string
+          on_init: "_"
+          on_occurrence: "${stringify_str}"
+
+      array:
+        raw:
+          identifier: "${full_name}_arg_${arg_idx}_a${array_idx}"
+          var_type: "real 32"
+          on_init: 0
+          on_occurrence: "${arg_val}"
+        stringified:
+          identifier: "${full_name}_arg_${arg_idx}_a${array_idx}_str"
+          var_type: string
+          on_init: "_"
+          on_occurrence: "${stringify_str}"
+
+  # ----------------------------------------------------------------------------
+  # LAYER 2: DERIVED LAYER (Identifier-Anchored + Dynamic & Single Policies)
+  # ----------------------------------------------------------------------------
+  derived_layer:
+    # --- Example 1: Signal Category (FIFO Policy Examples) ---
+    - match_type: "signal"
+      derived_traces:
+        # Multi-trace FIFO: Allocates new slots dynamically (slot_1, slot_2, ...)
+        - identifier: "${base_name}_fifo_multi_${slot_idx}"
+          policy: multi_trace_fifo
+          var_type: "wire 1"
+          on_init: "z"
+          idle_vcd_value: "z"
+          active_vcd_value: "x"
+          activate_on: ["Send"]
+          deactivate_on: "Receive"
+
+        # Single-trace FIFO: Strictly 1 slot, deactivates on 1st deactivation
+        - identifier: "${base_name}_fifo_single_${slot_idx}"
+          policy: single_trace_fifo
+          var_type: "wire 1"
+          on_init: "0"
+          idle_vcd_value: "0"
+          active_vcd_value: "1"
+          activate_on: ["Send"]
+          deactivate_on: "Receive"
+
+        # Counter:
+        - identifier: "${base_name}_fifo_counter_${slot_idx}"
+          policy: counter
+          var_type: "real 64" # for counter only types allowing displaying numerical/readable values are allowed, so basically real and string
+          on_init: "0"
+          increase_on: ["Send"]
+          decrease_on: "Receive"
+
+    # --- Example 2: Reentrancy Category (FILO Policy Examples) ---
+    - match_type: "routine"
+      derived_traces:
+        # Multi-trace FILO: Stack-allocated dynamic slots (slot_1, slot_2, ...)
+        - identifier: "${base_name}_filo_multi_${slot_idx}"
+          policy: multi_trace_filo
+          var_type: "wire 1"
+          on_init: "0"
+          idle_vcd_value: "0"
+          active_vcd_value: "1"
+          activate_on: "Begin"
+          deactivate_on: "End"
+
+        # Single-trace FILO: Reference-counted single slot, deactivates on LAST exit
+        - identifier: "${base_name}_filo_single_${slot_idx}"
+          policy: single_trace_filo
+          var_type: "wire 1"
+          on_init: "u"
+          idle_vcd_value: "u"
+          active_vcd_value: "w"
+          activate_on: "Begin"
+          deactivate_on: "End"
+
+        # Counter:
+        - identifier: "${base_name}_filo_counter_${slot_idx}"
+          policy: counter
+          var_type: "real 64" # for counter only types allowing displaying numerical/readable values are allowed, so basically real and string
+          on_init: "0"
+          increase_on: ["Begin"]
+          decrease_on: "End"

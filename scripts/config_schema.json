@@ -1,0 +1,403 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/tracer-config.schema.json",
+  "title": "Tracer Configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "General",
+    "TracePoints",
+    "TracePointDataOverrides",
+    "TracePointDataStringify"
+  ],
+  "properties": {
+    "General": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "TracerPrefix",
+        "TracerEnabled",
+        "TracerBufferSize",
+        "TracerBufferType",
+        "TracePointIDSize",
+        "TracePointNameUnique",
+        "TracePointNameUnderscored",
+        "TimestampResolutionValue",
+        "TimestampResolutionUnit",
+        "TimestampCntSize",
+        "TimestampStorage",
+        "TimestampAPI",
+        "TimestampOverflowAPI",
+        "TimestampHeader"
+      ],
+      "properties": {
+        "TracerPrefix": {
+          "type": "string",
+          "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+        },
+        "TracerEnabled": {
+          "type": "boolean"
+        },
+        "TracerBufferSize": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "TracerBufferType": {
+          "type": "string",
+          "enum": [
+            "circular",
+            "linear"
+          ]
+        },
+        "TracePointIDSize": {
+          "type": "string",
+          "enum": [
+            "1B",
+            "2B",
+            "3B",
+            "4B"
+          ]
+        },
+        "TracePointNameUnique": {
+          "type": "boolean"
+        },
+        "TracePointNameUnderscored": {
+          "type": "boolean"
+        },
+        "TimestampResolutionValue": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "TimestampResolutionUnit": {
+          "type": "string",
+          "enum": [
+            "ns",
+            "us",
+            "ms",
+            "s"
+          ]
+        },
+        "TimestampCntSize": {
+          "type": "string",
+          "enum": [
+            "2B",
+            "3B",
+            "4B"
+          ]
+        },
+        "TimestampStorage": {
+          "type": "string",
+          "enum": [
+            "fixed",
+            "ULEB128"
+          ]
+        },
+        "TimestampAPI": {
+          "type": "string"
+        },
+        "TimestampOverflowAPI": {
+          "type": "string"
+        },
+        "TimestampHeader": {
+          "type": "string"
+        },
+        "AtomicSectionStartAPI": {
+          "type": "string"
+        },
+        "AtomicSectionStopAPI": {
+          "type": "string"
+        },
+        "AtomicSectionHeader": {
+          "type": "string"
+        }
+      }
+    },
+    "TracePoints": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "TracePointName",
+          "TracePointIDs",
+          "TracePointEnabled",
+          "AtomicSectionRequired"
+        ],
+        "properties": {
+          "TracePointGroup": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+          },
+          "TracePointName": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9_]*$"
+          },
+          "TracePointIDs": {
+            "type": "object",
+            "minProperties": 1,
+            "propertyNames": {
+              "pattern": "^[A-Za-z]*$"
+            },
+            "additionalProperties": {
+              "type": "string",
+              "pattern": "^0x[0-9A-F]+$"
+            }
+          },
+          "TracePointEnabled": {
+            "type": "boolean"
+          },
+          "TracePointType": {
+            "type": "string"
+          },
+          "TracePointSubtype": {
+            "const": {
+              "signal": [
+                "Send",
+                "Receive"
+              ],
+              "task": [
+                "Start",
+                "Activate",
+                "Preempt",
+                "Terminate",
+                "Wait",
+                "Release"
+              ],
+              "isr": [
+                "Begin",
+                "End"
+              ],
+              "routine": [
+                "Begin",
+                "End"
+              ],
+              "hsm": [
+                "Init",
+                "Entry",
+                "Exit",
+                "Event",
+                "Timer",
+                "Transition"
+              ]
+            }
+          },
+          "TracePointInstanceSize": {
+            "type": "string",
+            "enum": [
+              "1B",
+              "2B"
+            ]
+          },
+          "TracePointCore": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "1B",
+                  "2B",
+                  "..."
+                ]
+              },
+              {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$"
+              }
+            ]
+          },
+          "TracePointData": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "anyOf": [
+                    {
+                      "pattern": "^(u8|s8|u16|s16|u32|s32|u64|s64|f32|f64)(a[1-9][0-9]*)?(\\([A-Za-z0-9_]+\\))?$"
+                    },
+                    {
+                      "pattern": "^b([1-9]|[1-5][0-9]|6[0-4])$"
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "anyOf": [
+                      {
+                        "pattern": "^(u8|s8|u16|s16|u32|s32|u64|s64|f32|f64)(a[1-9][0-9]*)?(\\([A-Za-z0-9_]+\\))?$"
+                      },
+                      {
+                        "pattern": "^b([1-9]|[1-5][0-9]|6[0-4])$"
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          },
+          "AtomicSectionRequired": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "TracePointDataOverrides": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "TracePointFilterKind",
+          "TracePointGroupFilter",
+          "TracePointNameFilter",
+          "TracePointTypeFilter",
+          "TracePointSubtypeFilter",
+          "TracePointDataOverride"
+        ],
+        "properties": {
+          "TracePointFilterKind": {
+            "type": "string",
+            "enum": [
+              "wildcards",
+              "regex"
+            ]
+          },
+          "TracePointGroupFilter": {
+            "type": "string"
+          },
+          "TracePointNameFilter": {
+            "type": "string"
+          },
+          "TracePointTypeFilter": {
+            "type": "string"
+          },
+          "TracePointSubtypeFilter": {
+            "type": "string"
+          },
+          "TracePointDataOverride": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "anyOf": [
+                {
+                  "pattern": "^(u8|s8|u16|s16|u32|s32|u64|s64|f32|f64)(a[1-9][0-9]*)?(\\([A-Za-z0-9_]+\\))?$"
+                },
+                {
+                  "pattern": "^b([1-9]|[1-5][0-9]|6[0-4])$"
+                }
+              ]
+            }
+          }
+        }
+      }
+    },
+    "TracePointDataStringify": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "Name",
+          "Values",
+          "Stringify"
+        ],
+        "properties": {
+          "Name": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9_]+(\\[(\\.\\.|[0-9]+|[0-9]+\\.\\.[0-9]*|\\.\\.[0-9]+)\\])?$"
+          },
+          "Values": {
+            "type": "string"
+          },
+          "Stringify": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "General": {
+            "properties": {
+              "TracerBufferType": {
+                "const": "circular"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "General": {
+            "properties": {
+              "TimestampStorage": {
+                "const": "fixed"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "General": {
+            "properties": {
+              "TimestampStorage": {
+                "const": "ULEB128"
+              }
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "General": {
+            "properties": {
+              "TracerBufferType": {
+                "const": "linear"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "TracePoints": {
+            "contains": {
+              "properties": {
+                "AtomicSectionRequired": {
+                  "const": true
+                }
+              },
+              "required": [
+                "AtomicSectionRequired"
+              ]
+            }
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "General": {
+            "required": [
+              "AtomicSectionStartAPI",
+              "AtomicSectionStopAPI",
+              "AtomicSectionHeader"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "hash": "a387a5b162f89f12280612a6ba0ad91a69cd95dd4e6dce607344e401c799c7e4"
+}
